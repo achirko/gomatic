@@ -222,7 +222,8 @@ def Task(element):
         return FetchArtifactTask(element.attrib['pipeline'], element.attrib['stage'], element.attrib['job'], fetch_artifact_src_from(element), dest, runif)
     if element.tag == "rake":
         return RakeTask(element.attrib['target'])
-    raise RuntimeError("Don't know task type %s" % element.tag)
+    else:
+        raise RuntimeError("Don't know task type %s" % element.tag)
 
 
 class AbstractTask(CommonEqualityMixin):
@@ -1073,6 +1074,7 @@ class GoCdConfigurator:
     def reorder_elements_to_please_go(self):
         move_all_to_end(self.__xml_root, 'pipelines')
         move_all_to_end(self.__xml_root, 'templates')
+        move_all_to_end(self.__xml_root, 'environments')
         move_all_to_end(self.__xml_root, 'agents')
 
         for pipeline in self.pipelines():
